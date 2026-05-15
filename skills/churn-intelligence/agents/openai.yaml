@@ -1,0 +1,7 @@
+interface:
+  display_name: "Churn Intelligence"
+  short_description: "Explain churn risk and retention actions"
+  default_prompt: "Use $churn-intelligence to score a seller, explain the churn drivers, and recommend the next best retention action."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,1023 @@
+# MASTER PROMPT — IM Hackathon Churn Intelligence Platform
+
+We are building a hackathon-grade AI platform for the following business problems:
+
+1. Automated Churn Predictor
+   Predict which high-value buyers or sellers are likely to churn so the company can proactively intervene.
+
+2. Churn Early-Warning System
+   Build an AI agent that flags premium subscribers showing signs of usage drop 90 days before renewal and generates personalized “reasons to stay” using historical success/activity data.
+
+The attached files contain:
+
+* Hackathon rules, rubric, expectations, and skills.md format guidance 
+* Sample transaction-wise data
+* Chat/activity data
+* Subscription data
+* Seller contactbook data
+* Churn-related sample datasets
+
+These datasets are only representative samples to understand schema patterns and domain logic.
+
+Your task is to design and generate a COMPLETE hackathon submission that scores highly on:
+
+* Impact
+* Pinch Metrics
+* Solution Completeness
+* Solution Robustness
+* Skilled Solution (skills.md quality)
+
+You are NOT building just a model.
+You are building:
+
+* a production-grade AI system concept,
+* an explainable prediction engine,
+* an agentic workflow,
+* a reusable skill framework,
+* a measurable business impact story,
+* and a polished demo-ready architecture.
+
+---
+
+# PRIMARY OBJECTIVE
+
+Create an end-to-end “Churn Intelligence Platform” for sellers/buyers/subscribers that:
+
+1. Predicts churn probability
+2. Detects early warning signs
+3. Explains WHY churn risk exists
+4. Generates retention recommendations
+5. Suggests interventions for sales teams
+6. Produces measurable business impact metrics
+7. Includes reusable AI skills/modules
+8. Is demo-ready for judges
+
+---
+
+# IMPORTANT HACKATHON STRATEGY
+
+The judges score:
+
+* practical business impact,
+* clarity of problem framing,
+* robustness,
+* completeness,
+* and quality of skills.md.
+
+Therefore:
+
+* prioritize real-world practicality over fancy ML
+* prioritize explainability over black-box models
+* prioritize reusable workflows
+* prioritize measurable outcomes
+* prioritize production readiness
+* prioritize modular agentic design
+
+DO NOT build a toy notebook.
+
+Build something that feels deployable at IndiaMART scale.
+
+---
+
+# REQUIRED OUTPUTS
+
+Generate ALL of the following:
+
+---
+
+# 1. PROBLEM FRAMING
+
+Create:
+
+* crisp business problem statement
+* churn definitions
+* buyer churn definition
+* seller churn definition
+* premium subscriber churn definition
+* measurable KPIs
+* impact estimation
+* assumptions
+* pain-point quantification
+* “why this matters” section
+
+Include:
+
+* estimated revenue leakage
+* sales inefficiencies
+* missed renewals
+* customer acquisition vs retention cost logic
+* usage drop interpretation
+
+Define:
+
+* leading indicators
+* lagging indicators
+* actionable metrics
+
+---
+
+# 2. DATA UNDERSTANDING
+
+Analyze the provided schemas and infer:
+
+* entity relationships
+* primary keys
+* event flows
+* transaction patterns
+* engagement patterns
+* subscription lifecycle
+* seller-buyer interaction behavior
+
+Create:
+
+* inferred ER diagram description
+* feature inventory
+* feature categories
+
+Classify features into:
+
+* engagement
+* monetization
+* responsiveness
+* trust
+* activity
+* transaction quality
+* communication
+* subscription health
+* retention signals
+* behavioral decline signals
+
+---
+
+# 3. CHURN DEFINITIONS
+
+Design multiple churn definitions:
+
+## Seller churn
+
+Examples:
+
+* inactivity for X days
+* drop in response rate
+* no buyer engagement
+* subscription non-renewal
+* reduced catalog activity
+
+## Buyer churn
+
+Examples:
+
+* no inquiry generation
+* drop in order activity
+* reduced messaging
+* inactivity window
+
+## Premium churn risk
+
+Examples:
+
+* usage drop before renewal
+* decreasing engagement velocity
+* falling lead conversion
+* low ROI realization
+
+Create:
+
+* risk bands
+* confidence scoring
+* explainability logic
+
+---
+
+# 4. FEATURE ENGINEERING PLAN
+
+Design advanced feature engineering.
+
+Include:
+
+* rolling windows
+* trend deltas
+* week-over-week decline
+* moving averages
+* activity momentum
+* recency-frequency-monetary (RFM)
+* engagement entropy
+* buyer intent score
+* seller responsiveness score
+* lead utilization score
+* chat responsiveness metrics
+* subscription health score
+* contactbook engagement score
+
+Generate:
+
+* exact feature names
+* formulas
+* sample calculations
+* feature importance hypotheses
+
+Also design:
+
+* graph/network features
+* temporal features
+* sequence features
+* cohort features
+
+---
+
+# 5. MODEL ARCHITECTURE
+
+Design multiple approaches:
+
+## Baseline
+
+* rule-based heuristic engine
+
+## Intermediate
+
+* XGBoost / LightGBM
+
+## Advanced
+
+* hybrid ML + LLM explanation layer
+
+## Optional
+
+* graph-based churn intelligence
+
+For each:
+
+* inputs
+* outputs
+* pros/cons
+* explainability
+* scalability
+* deployment complexity
+
+Recommend:
+
+* best hackathon approach
+* fastest MVP
+* highest-impact architecture
+
+---
+
+# 6. EARLY WARNING ENGINE
+
+Design a 90-day renewal risk engine.
+
+Must include:
+
+* behavioral decline detection
+* anomaly detection
+* trend monitoring
+* engagement decay
+* inactivity forecasting
+
+Generate:
+
+* alerting logic
+* scoring logic
+* confidence logic
+* severity bands
+
+Examples:
+
+* “seller response rate dropped 42%”
+* “buyer inquiry activity down 65%”
+* “lead utilization dropped for 3 consecutive weeks”
+
+---
+
+# 7. AI RETENTION AGENT
+
+Design an AI agent that:
+
+* explains churn causes
+* generates personalized retention suggestions
+* generates “Reasons to Stay”
+* summarizes historical success
+* recommends sales intervention
+
+Example outputs:
+
+* “You generated 420 qualified leads in 6 months”
+* “Fast response sellers renew 2.3x more”
+* “Your category demand is increasing”
+
+Generate:
+
+* prompt templates
+* agent workflow
+* retrieval pipeline
+* memory/context strategy
+* explainability strategy
+
+---
+
+# 8. INTERVENTION RECOMMENDATION ENGINE
+
+Generate:
+
+* next best action engine
+* retention playbooks
+* intervention prioritization
+
+Examples:
+
+* sales call
+* WhatsApp nudges
+* discount offer
+* training recommendation
+* catalog optimization
+* response-time improvement
+
+Create:
+
+* intervention matrix
+* priority scoring
+* business rules
+
+---
+
+# 9. SYSTEM ARCHITECTURE
+
+Generate:
+
+* production-grade architecture
+* data flow
+* streaming/batch design
+* APIs
+* microservices
+* event pipelines
+* scheduler jobs
+* model serving architecture
+* monitoring stack
+
+Include:
+
+* Redis
+* Kafka/pubsub
+* PostgreSQL
+* feature store
+* vector DB
+* model inference service
+
+Also include:
+
+* scalability strategy
+* failure handling
+* retraining flow
+* monitoring KPIs
+
+---
+
+# 10. DATABASE DESIGN
+
+Design:
+
+* tables
+* schemas
+* warehouse models
+
+Include:
+
+* churn_scores
+* retention_actions
+* engagement_features
+* seller_health_daily
+* buyer_health_daily
+* subscription_risk
+* alert_events
+* intervention_history
+
+Generate:
+
+* columns
+* datatypes
+* meanings
+* sample values
+
+---
+
+# 11. API DESIGN
+
+Generate APIs for:
+
+* churn prediction
+* seller health
+* buyer health
+* alerts
+* recommendations
+* AI summaries
+* renewal risk
+
+Include:
+
+* request/response examples
+* pagination
+* auth assumptions
+* latency expectations
+
+---
+
+# 12. DASHBOARD / UI DESIGN
+
+Design:
+
+* executive dashboard
+* sales dashboard
+* seller health dashboard
+
+Include:
+
+* risk heatmaps
+* churn funnel
+* cohort analysis
+* renewal watchlist
+* intervention tracker
+* explainability cards
+
+Generate:
+
+* UX flow
+* widget descriptions
+* charts
+* drilldowns
+
+---
+
+# 13. EVALUATION METRICS
+
+Generate:
+
+* ML metrics
+* business metrics
+* operational metrics
+
+Include:
+
+* precision
+* recall
+* F1
+* uplift
+* retention lift
+* revenue saved
+* intervention success rate
+
+Also generate:
+
+* A/B testing plan
+* offline validation strategy
+* online monitoring plan
+
+---
+
+# 14. HACKATHON DEMO STRATEGY
+
+Generate:
+
+* 5–10 minute demo script
+* storytelling flow
+* judge-focused narrative
+* demo checkpoints
+* live demo ideas
+* fallback demo plan
+
+Optimize for:
+
+* rubric scoring
+* clarity
+* wow factor
+* business realism
+
+---
+
+# 15. COMPLETE SKILL FOLDER
+
+Generate a COMPLETE hackathon-ready skill structure:
+
+your-skill/
+├── SKILL.md
+├── scripts/
+├── references/
+├── assets/
+
+The SKILL.md must:
+
+* follow canonical Anthropic/OpenAI skill format
+* have YAML frontmatter
+* include activation instructions
+* include workflows
+* include environment variables
+* include examples
+* include edge cases
+* include evaluation logic
+
+Generate:
+
+* production-grade SKILL.md
+* helper scripts
+* references docs
+* output schemas
+* templates
+
+This section is CRITICAL because the rubric gives 20% weight to skill quality.
+
+---
+
+# 16. IMPLEMENTATION PLAN
+
+Generate:
+
+* phased roadmap
+* MVP plan
+* hackathon timeline
+* role allocation
+* engineering breakdown
+* infra requirements
+
+Include:
+
+* “what to finish in first 4 hours”
+* “what to polish last”
+* “what gives maximum judge impact”
+
+---
+
+# 17. BONUS INNOVATION IDEAS
+
+Suggest advanced features like:
+
+* conversational churn copilot
+* graph intelligence
+* relationship risk mapping
+* renewal simulation
+* intervention simulation
+* auto-generated retention campaigns
+* explainable AI narratives
+* seller benchmarking
+* AI-generated sales talking points
+
+---
+
+# 18. OUTPUT FORMAT
+
+Structure the response as:
+
+1. Executive Summary
+2. Problem Framing
+3. Data Understanding
+4. Solution Architecture
+5. ML Strategy
+6. AI Agent Design
+7. System Design
+8. APIs
+9. Database
+10. Dashboards
+11. Metrics
+12. Demo Plan
+13. Skill Folder
+14. Implementation Roadmap
+15. Business Impact
+16. Future Scope
+
+Be extremely detailed.
+Think like:
+
+* staff engineer
+* product architect
+* ML lead
+* solutions consultant
+* hackathon winner
+
+Optimize for:
+
+* maximum rubric score
+* deployability
+* explainability
+* business value
+* demo quality
+* technical credibility
+
+DO NOT give generic ideas.
+Give implementation-grade detail.
+
+Use tables heavily.
+Generate pseudo-code where useful.
+Generate realistic business assumptions.
+Generate reusable modular architecture.
+
+The final output should feel like:
+
+* a startup pitch,
+* an enterprise AI platform,
+* and a production-ready system design combined.
+
+
+
+
+# 19. SYNTHETIC DATASET GENERATION (VERY IMPORTANT)
+
+The attached datasets are ONLY representative samples to understand:
+path: seller-buyer-churn.xlsx
+
+* schema patterns,
+* field naming,
+* business entities,
+* event types,
+* and interaction structures.
+
+The actual hackathon solution MUST NOT depend only on tiny sample data.
+
+You must therefore DESIGN and GENERATE a realistic synthetic dataset ecosystem large enough to:
+
+* demonstrate ML training,
+* churn prediction,
+* early warning logic,
+* dashboard analytics,
+* cohort analysis,
+* retention recommendations,
+* and agent workflows.
+
+The synthetic dataset should simulate a realistic IndiaMART-like B2B marketplace ecosystem.
+
+---
+
+# SYNTHETIC DATA REQUIREMENTS
+
+Generate realistic interconnected datasets for:
+
+## 1. Sellers
+
+Fields:
+
+* seller_id
+* business category
+* city/state
+* subscription tier
+* onboarding date
+* response rate
+* avg response time
+* product count
+* catalog quality score
+* lead utilization score
+* subscription renewal history
+* GST verified flag
+* trust score
+* churn label
+* churn risk score
+
+Generate:
+
+* active sellers
+* dormant sellers
+* high-performing sellers
+* sellers at churn risk
+* premium sellers
+* newly onboarded sellers
+
+Target:
+
+* 10,000+ sellers
+
+---
+
+## 2. Buyers
+
+Fields:
+
+* buyer_id
+* industry
+* inquiry frequency
+* average order value
+* engagement score
+* repeat interaction score
+* region
+* churn label
+* activity level
+
+Generate:
+
+* highly active buyers
+* seasonal buyers
+* buyers with declining engagement
+* buyers with high transaction intent
+
+Target:
+
+* 50,000+ buyers
+
+---
+
+## 3. Transactions / Inquiries
+
+Fields:
+
+* transaction_id
+* buyer_id
+* seller_id
+* transaction_type
+* inquiry timestamp
+* response timestamp
+* response SLA
+* conversion status
+* order value
+* payment status
+* communication count
+* negotiation duration
+* lead source
+
+Include:
+
+* successful transactions
+* abandoned inquiries
+* delayed responses
+* premium leads
+* fake/spam leads
+
+Target:
+
+* 1M+ events
+
+---
+
+## 4. Chat / Messaging Activity
+
+Fields:
+
+* message_id
+* sender_id
+* receiver_id
+* txn_id
+* message_type
+* timestamp
+* read status
+* response latency
+* sentiment
+* escalation flag
+
+Generate:
+
+* healthy engagement conversations
+* ghosting patterns
+* delayed responses
+* conflict/escalation cases
+* highly engaged negotiations
+
+Target:
+
+* millions of chat events
+
+---
+
+## 5. Subscription Dataset
+
+Fields:
+
+* subscription_id
+* seller_id
+* plan_type
+* renewal_date
+* renewal_history
+* package_value
+* usage_score
+* feature_adoption_score
+* login_frequency
+* churn_outcome
+
+Include:
+
+* near-renewal sellers
+* high-risk renewal cases
+* successful retention cases
+* upgraded plans
+* downgraded plans
+
+---
+
+## 6. Seller Contactbook Dataset
+
+Fields:
+
+* contactbook_id
+* seller_id
+* buyer_id
+* interaction_frequency
+* last_contacted_at
+* relationship_strength
+* repeat_business_score
+* saved_contact_flag
+
+Generate:
+
+* strong buyer-seller networks
+* weak engagement networks
+* high-value repeat buyers
+* inactive relationships
+
+---
+
+# DATA GENERATION GOALS
+
+The synthetic data must:
+
+* preserve realistic business behavior
+* include temporal patterns
+* include seasonal trends
+* include churn signals
+* include noise/anomalies
+* include edge cases
+* include fraud/spam behavior
+* include long-tail user behavior
+
+The data should NOT look randomly generated.
+
+It should simulate:
+
+* real business lifecycles,
+* user decline patterns,
+* engagement decay,
+* successful retention,
+* and subscription behavior.
+
+---
+
+# IMPORTANT CHURN PATTERNS TO SIMULATE
+
+Generate realistic churn indicators such as:
+
+## Seller churn indicators
+
+* slower response times
+* fewer logins
+* decreasing inquiry handling
+* declining conversion rate
+* catalog inactivity
+* reduced buyer engagement
+* poor subscription feature adoption
+
+## Buyer churn indicators
+
+* lower inquiry frequency
+* reduced order value
+* reduced repeat interactions
+* inactivity periods
+
+## Premium renewal risk indicators
+
+* 90-day usage decline
+* lower ROI realization
+* fewer quality leads handled
+* reduced feature usage
+* competitor migration behavior simulation
+
+---
+
+# TIME SERIES REQUIREMENTS
+
+Generate at least:
+
+* 12–24 months of historical data
+* daily/weekly/monthly granularity
+* seasonality patterns
+* festival/business spikes
+* category-specific trends
+
+Examples:
+
+* festive spikes
+* industry demand cycles
+* quarter-end purchasing behavior
+
+---
+
+# ADVANCED RELATIONSHIP MODELING
+
+Simulate:
+
+* seller-buyer relationship graphs
+* repeat interactions
+* network effects
+* referral-like behavior
+* cluster behavior
+
+Include:
+
+* high-value seller ecosystems
+* isolated sellers
+* power buyers
+* dormant relationship graphs
+
+---
+
+# OUTPUT REQUIREMENTS
+
+Generate:
+
+## 1. Dataset Design Document
+
+Explain:
+
+* each dataset
+* relationships
+* cardinality
+* business meaning
+* churn signal relevance
+
+---
+
+## 2. Synthetic Data Generator Scripts
+
+Provide:
+
+* Python scripts
+* Faker-based generation
+* configurable scaling
+* seed-based reproducibility
+
+Scripts should generate:
+
+* CSV files
+* parquet files
+* SQL inserts
+
+---
+
+## 3. Realistic Data Distribution Logic
+
+Include:
+
+* skewed distributions
+* Pareto behavior
+* non-uniform engagement
+* heavy-tail transaction behavior
+
+Avoid:
+
+* uniformly random fake data
+
+---
+
+## 4. Data Dictionary
+
+Generate:
+
+* field meanings
+* datatypes
+* sample values
+* null handling
+* business interpretations
+
+---
+
+## 5. Ground Truth Labels
+
+Explain:
+
+* how churn labels are generated
+* how risk scores are assigned
+* how early warning signals are derived
+
+---
+
+# BONUS REQUIREMENTS
+
+Also generate:
+
+* anomaly scenarios
+* edge-case users
+* cold-start users
+* bot/spam accounts
+* inactive premium users
+* fake lead scenarios
+* sudden engagement crashes
+* recovery-after-intervention scenarios
+
+---
+
+# FINAL EXPECTATION
+
+The synthetic dataset ecosystem should be GOOD ENOUGH that:
+
+* dashboards look real,
+* ML models train meaningfully,
+* churn predictions appear believable,
+* agent recommendations feel intelligent,
+* and judges feel the solution could realistically work at enterprise scale.
+
+The generated datasets should support:
+
+* ML training
+* analytics
+* RAG pipelines
+* AI agents
+* dashboards
+* cohort analysis
+* intervention systems
+* explainability systems
+* and demo storytelling.
+
+
+
+sample 

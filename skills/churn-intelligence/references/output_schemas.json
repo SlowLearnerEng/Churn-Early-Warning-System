@@ -1,0 +1,53 @@
+{
+  "risk_score_response": {
+    "type": "object",
+    "required": [
+      "entity_type",
+      "entity_id",
+      "risk_score",
+      "risk_band",
+      "confidence",
+      "reason_codes",
+      "recommended_action"
+    ],
+    "properties": {
+      "entity_type": {"type": "string", "enum": ["seller", "buyer", "subscription"]},
+      "entity_id": {"type": "string"},
+      "risk_score": {"type": "number", "minimum": 0, "maximum": 100},
+      "risk_band": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+      "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+      "reason_codes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["code", "severity", "evidence"],
+          "properties": {
+            "code": {"type": "string"},
+            "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+            "evidence": {"type": "string"},
+            "contribution": {"type": "number"}
+          }
+        }
+      },
+      "recommended_action": {"type": "string"},
+      "revenue_at_risk": {"type": "number"}
+    }
+  },
+  "retention_summary_response": {
+    "type": "object",
+    "required": [
+      "summary",
+      "reasons_to_stay",
+      "next_best_action",
+      "sales_opening_line",
+      "evidence_ids"
+    ],
+    "properties": {
+      "summary": {"type": "string"},
+      "reasons_to_stay": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 3},
+      "next_best_action": {"type": "string"},
+      "sales_opening_line": {"type": "string"},
+      "evidence_ids": {"type": "array", "items": {"type": "string"}}
+    }
+  }
+}
