@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Churn Intelligence Platform — AI-powered retention command center for B2B marketplaces">
+    <title>Churn Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+                <div class="brand-title">Churn Intel</div>
+                <div class="brand-subtitle">Retention Platform</div>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-tab="executive" id="nav-executive">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Executive
+            </button>
+            <button class="nav-btn" data-tab="watchlist" id="nav-watchlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sales Watchlist
+            </button>
+            <button class="nav-btn" data-tab="seller360" id="nav-seller360">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Seller 360
+            </button>
+            <button class="nav-btn" data-tab="cohorts" id="nav-cohorts">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                Cohorts
+            </button>
+            <button class="nav-btn" data-tab="interventions" id="nav-interventions">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                Interventions
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="status-dot"></div>
+            <span>Live · Demo Mode</span>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner"></div>
+            <p>Loading intelligence data…</p>
+        </div>
+
+        <!-- Executive Dashboard -->
+        <section class="tab-panel active" id="panel-executive">
+            <div class="page-header">
+                <h1>Executive Overview</h1>
+                <p class="page-subtitle">Revenue at risk and retention performance</p>
+            </div>
+            <div class="kpi-grid" id="kpi-grid"></div>
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h3>Risk Distribution</h3>
+                    <div class="chart-wrap"><canvas id="chart-risk-donut"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Renewal Funnel</h3>
+                    <div class="chart-wrap"><canvas id="chart-renewal-funnel"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Top Risk Drivers</h3>
+                    <div class="chart-wrap"><canvas id="chart-top-reasons"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>Risk Heatmap — Package × State</h3>
+                <div id="heatmap-container" class="heatmap-container"></div>
+            </div>
+        </section>
+
+        <!-- Sales Watchlist -->
+        <section class="tab-panel" id="panel-watchlist">
+            <div class="page-header">
+                <h1>Sales Watchlist</h1>
+                <p class="page-subtitle">Prioritized sellers needing retention action</p>
+            </div>
+            <div class="filters-bar" id="filters-bar">
+                <select id="filter-band" class="filter-select"><option value="">All Bands</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option></select>
+                <select id="filter-category" class="filter-select"><option value="">All Categories</option></select>
+                <select id="filter-city" class="filter-select"><option value="">All Cities</option></select>
+                <input type="text" id="filter-search" class="filter-input" placeholder="Search seller ID or name…">
+                <div class="filter-count" id="filter-count"></div>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table" id="watchlist-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="priority_score">Priority ↕</th>
+                            <th data-sort="seller_id">Seller ↕</th>
+                            <th>Package</th>
+                            <th>City</th>
+                            <th data-sort="risk_score">Risk ↕</th>
+                            <th data-sort="package_value">Revenue ↕</th>
+                            <th>Reasons</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="watchlist-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Seller 360 -->
+        <section class="tab-panel" id="panel-seller360">
+            <div class="page-header">
+                <h1>Seller 360</h1>
+                <p class="page-subtitle">Search or select a seller to view their full profile</p>
+            </div>
+            <div class="s360-picker" id="s360-picker">
+                <div class="s360-search-bar">
+                    <input type="text" id="s360-search" class="filter-input" placeholder="Search by ID, name, city, or package…" style="width:100%">
+                </div>
+                <div class="s360-list-header">
+                    <span>Seller</span><span>Package</span><span>City</span><span>Risk</span><span></span>
+                </div>
+                <div class="s360-list" id="s360-list"></div>
+            </div>
+            <div id="seller360-content" class="seller360-content"></div>
+        </section>
+
+        <!-- Cohorts -->
+        <section class="tab-panel" id="panel-cohorts">
+            <div class="page-header">
+                <h1>Cohort Analysis</h1>
+                <p class="page-subtitle">Risk patterns by category, city, tier, and segment</p>
+            </div>
+            <div class="cohort-tabs">
+                <button class="cohort-tab active" data-cohort="by_package">Package</button>
+                <button class="cohort-tab" data-cohort="by_state">State</button>
+                <button class="cohort-tab" data-cohort="by_business_type">Business Type</button>
+                <button class="cohort-tab" data-cohort="by_turnover">Turnover</button>
+            </div>
+            <div class="charts-row">
+                <div class="chart-card" style="flex:2">
+                    <h3 id="cohort-chart-title">Risk by Category</h3>
+                    <div class="chart-wrap chart-wrap-lg"><canvas id="chart-cohort-bars"></canvas></div>
+                </div>
+                <div class="chart-card" style="flex:1">
+                    <h3>Revenue at Risk</h3>
+                    <div class="chart-wrap chart-wrap-lg"><canvas id="chart-cohort-revenue"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interventions -->
+        <section class="tab-panel" id="panel-interventions">
+            <div class="page-header">
+                <h1>Intervention Tracker</h1>
+                <p class="page-subtitle">Action queue, playbook performance, and outcomes</p>
+            </div>
+            <div class="kpi-grid" id="intervention-kpis"></div>
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h3>Actions by Type</h3>
+                    <div class="chart-wrap"><canvas id="chart-action-types"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Actions by Status</h3>
+                    <div class="chart-wrap"><canvas id="chart-action-status"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>Action Queue</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="action-table">
+                        <thead><tr><th>Seller</th><th>Severity</th><th>Action</th><th>Owner</th><th>Status</th><th>Priority</th></tr></thead>
+                        <tbody id="action-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script src="views.js"></script>
+</body>
+</html>
