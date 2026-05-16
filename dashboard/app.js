@@ -25,8 +25,19 @@ function actionLabel(c) { return c ? c.replace(/_/g,' ').replace(/\b\w/g,x=>x.to
 function destroyChart(id) { if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; } }
 function makeChart(id, cfg) { destroyChart(id); const c=document.getElementById(id); if(!c) return null; chartInstances[id]=new Chart(c.getContext('2d'),cfg); return chartInstances[id]; }
 
-/* ---- Tab Navigation ---- */
+/* ---- Tab Navigation (lazy rendering) ---- */
 function initTabs() {
+    const rendered = new Set();
+    const renderers = {
+        watchlist:     () => { initWatchlistFilters(); renderWatchlist(); },
+        seller360:     () => initSellerPicker(),
+        renewal:       () => renderRenewalRisk(),
+        cohorts:       () => { initCohortTabs(); renderCohorts(); },
+        interventions: () => { renderInterventions(); renderInterventionROI(); },
+        upsell:        () => renderUpsellSignals(),
+        activation:    () => renderActivation(),
+    };
+
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
@@ -34,6 +45,10 @@ function initTabs() {
             btn.classList.add('active');
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.getElementById('panel-' + tab)?.classList.add('active');
+            if (!rendered.has(tab) && renderers[tab]) {
+                renderers[tab]();
+                rendered.add(tab);
+            }
         });
     });
 }
@@ -85,32 +100,6 @@ function renderTopReasons() {
     });
 }
 
-function renderHeatmap() {
-    const hm = DATA.executive.heatmap;
-    const packages = Object.keys(hm).sort();
-    const allStates = new Set();
-    packages.forEach(p => Object.keys(hm[p]).forEach(s => allStates.add(s)));
-    const states = [...allStates].sort().slice(0, 12); // top 12
-
-    let html = '<table class="heatmap-table"><thead><tr><th></th>';
-    states.forEach(s => { html += `<th>${s}</th>`; });
-    html += '</tr></thead><tbody>';
-    packages.forEach(pkg => {
-        html += `<tr><th>${pkg}</th>`;
-        states.forEach(state => {
-            const cell = (hm[pkg]||{})[state];
-            if (cell) {
-                const risk = cell.avg_risk;
-                const bg = risk >= 50 ? 'rgba(239,68,68,0.25)' : risk >= 35 ? 'rgba(245,158,11,0.25)' : 'rgba(16,185,129,0.15)';
-                const color = risk >= 50 ? '#ef4444' : risk >= 35 ? '#f59e0b' : '#10b981';
-                html += `<td class="heatmap-cell" style="background:${bg};color:${color}" title="${pkg} × ${state}: ${cell.count} sellers, avg risk ${risk}">${risk}</td>`;
-            } else { html += '<td class="heatmap-cell" style="opacity:0.2">—</td>'; }
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table>';
-    document.getElementById('heatmap-container').innerHTML = html;
-}
 
 /* ---- Watchlist ---- */
 function getFilteredSellers() {

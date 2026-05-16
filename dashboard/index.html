@@ -35,6 +35,11 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 Seller 360
             </button>
+            <button class="nav-btn nav-btn-renewal" data-tab="renewal" id="nav-renewal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                Renewal Risk
+                <span class="renewal-nav-badge" id="renewal-nav-count" style="display:none">0</span>
+            </button>
             <button class="nav-btn" data-tab="cohorts" id="nav-cohorts">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
                 Cohorts
@@ -42,6 +47,14 @@
             <button class="nav-btn" data-tab="interventions" id="nav-interventions">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
                 Interventions
+            </button>
+            <button class="nav-btn" data-tab="upsell" id="nav-upsell">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                Upsell Signals
+            </button>
+            <button class="nav-btn" data-tab="activation" id="nav-activation">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                Activation
             </button>
         </nav>
         <div class="sidebar-footer">
@@ -77,10 +90,6 @@
                     <h3>Top Risk Drivers</h3>
                     <div class="chart-wrap"><canvas id="chart-top-reasons"></canvas></div>
                 </div>
-            </div>
-            <div class="chart-card full-width">
-                <h3>Risk Heatmap — Package × State</h3>
-                <div id="heatmap-container" class="heatmap-container"></div>
             </div>
         </section>
 
@@ -122,18 +131,53 @@
         <section class="tab-panel" id="panel-seller360">
             <div class="page-header">
                 <h1>Seller 360</h1>
-                <p class="page-subtitle">Search or select a seller to view their full profile</p>
+                <p class="page-subtitle">Search for a seller to view their full profile</p>
             </div>
-            <div class="s360-picker" id="s360-picker">
-                <div class="s360-search-bar">
-                    <input type="text" id="s360-search" class="filter-input" placeholder="Search by ID, name, city, or package…" style="width:100%">
-                </div>
-                <div class="s360-list-header">
-                    <span>Seller</span><span>Package</span><span>City</span><span>Risk</span><span></span>
-                </div>
-                <div class="s360-list" id="s360-list"></div>
+            <div class="s360-search-wrap" id="s360-search-wrap">
+                <svg class="s360-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="s360-search" class="s360-search-input" placeholder="Search by seller ID, company name, city, or package…" autocomplete="off">
+                <div class="s360-dropdown" id="s360-dropdown"></div>
             </div>
             <div id="seller360-content" class="seller360-content"></div>
+        </section>
+
+        <!-- Renewal Risk -->
+        <section class="tab-panel" id="panel-renewal">
+            <div class="page-header">
+                <h1>90-Day Renewal Risk</h1>
+                <p class="page-subtitle">Sellers approaching subscription renewal with high or critical churn risk</p>
+            </div>
+            <div class="kpi-grid" id="renewal-kpis"></div>
+            <div class="charts-row">
+                <div class="chart-card" style="flex:1">
+                    <h3>Renewal Urgency Timeline</h3>
+                    <div class="chart-wrap"><canvas id="chart-renewal-timeline"></canvas></div>
+                </div>
+                <div class="chart-card" style="flex:2">
+                    <h3>Risk Score vs. Days to Renewal <span style="font-size:0.72rem;color:var(--text-muted);font-weight:400">(bubble size = revenue at stake)</span></h3>
+                    <div class="chart-wrap"><canvas id="chart-renewal-bubble"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>Priority Renewal Queue</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="renewal-table">
+                        <thead>
+                            <tr>
+                                <th>Seller</th>
+                                <th>Package</th>
+                                <th>Risk</th>
+                                <th>Days to Renewal</th>
+                                <th>Revenue at Risk</th>
+                                <th>Top Alert</th>
+                                <th>Action</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="renewal-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </section>
 
         <!-- Cohorts -->
@@ -183,6 +227,86 @@
                     <table class="data-table" id="action-table">
                         <thead><tr><th>Seller</th><th>Severity</th><th>Action</th><th>Owner</th><th>Status</th><th>Priority</th></tr></thead>
                         <tbody id="action-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- ROI Tracker -->
+            <div class="roi-section-divider">
+                <span>Playbook Effectiveness &amp; ROI</span>
+            </div>
+            <div class="kpi-grid" id="roi-kpis"></div>
+            <div class="charts-row">
+                <div class="chart-card" style="flex:2">
+                    <h3>Estimated ROI by Intervention Type</h3>
+                    <div class="chart-wrap"><canvas id="chart-roi-effectiveness"></canvas></div>
+                </div>
+                <div class="chart-card" style="flex:1">
+                    <h3>Recovery Scenarios</h3>
+                    <div class="chart-wrap"><canvas id="chart-roi-recovery"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>Playbook Performance</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="roi-table">
+                        <thead><tr><th>Action Type</th><th>Total</th><th>Completed</th><th>Success Rate</th><th>Est. ROI</th><th>Revenue Retained</th></tr></thead>
+                        <tbody id="roi-playbook-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upsell Signals -->
+        <section class="tab-panel" id="panel-upsell">
+            <div class="page-header">
+                <h1>Upsell Signals</h1>
+                <p class="page-subtitle">Sellers with rising engagement flagged for package upgrade outreach</p>
+            </div>
+            <div class="kpi-grid" id="upsell-kpis"></div>
+            <div class="charts-row">
+                <div class="chart-card" style="flex:1">
+                    <h3>Upsell Candidates by Package Tier</h3>
+                    <div class="chart-wrap"><canvas id="chart-upsell-tiers"></canvas></div>
+                </div>
+                <div class="chart-card" style="flex:1">
+                    <h3>Score Distribution</h3>
+                    <div class="chart-wrap"><canvas id="chart-upsell-scores"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>Top Upsell Candidates</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="upsell-table">
+                        <thead><tr><th>Seller</th><th>Package</th><th>Upsell Score</th><th>Monthly ENQ</th><th>Pickup %</th><th>Rating</th><th>Signal</th><th></th></tr></thead>
+                        <tbody id="upsell-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activation Health -->
+        <section class="tab-panel" id="panel-activation">
+            <div class="page-header">
+                <h1>Early Activation Health</h1>
+                <p class="page-subtitle">New sellers (&lt;1 year) — onboarding intervention is 10× cheaper than year-1 renewal retention</p>
+            </div>
+            <div class="kpi-grid" id="activation-kpis"></div>
+            <div class="charts-row">
+                <div class="chart-card" style="flex:1">
+                    <h3>Activation Score Distribution</h3>
+                    <div class="chart-wrap"><canvas id="chart-activation-dist"></canvas></div>
+                </div>
+                <div class="chart-card" style="flex:2">
+                    <h3>Activation Score vs. Tenure (months)</h3>
+                    <div class="chart-wrap"><canvas id="chart-activation-tenure"></canvas></div>
+                </div>
+            </div>
+            <div class="chart-card full-width">
+                <h3>New Seller Activation Queue</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="activation-table">
+                        <thead><tr><th>Seller</th><th>Package</th><th>Tenure</th><th>Activation Score</th><th>Top Gap</th><th>Risk Band</th><th></th></tr></thead>
+                        <tbody id="activation-body"></tbody>
                     </table>
                 </div>
             </div>

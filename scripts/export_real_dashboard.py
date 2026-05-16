@@ -13,6 +13,7 @@ from __future__ import annotations
 import csv
 import json
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -229,18 +230,6 @@ def main() -> None:
             reason_counter[rc.get("code", "")] += 1
     top_reasons = reason_counter.most_common(10)
 
-    # Heatmap (state × package)
-    heatmap: Dict[str, Dict[str, Dict]] = defaultdict(lambda: defaultdict(lambda: {"count": 0, "total_risk": 0}))
-    for s in seller_list:
-        cell = heatmap[s["package"]][s["state"]]
-        cell["count"] += 1
-        cell["total_risk"] += s["risk_score"]
-    # Average risk
-    for pkg in heatmap:
-        for state in heatmap[pkg]:
-            c = heatmap[pkg][state]
-            c["avg_risk"] = round(c["total_risk"] / max(c["count"], 1), 1)
-
     # Cohorts
     def build_cohort(key_fn):
         cohort = defaultdict(lambda: {"count": 0, "total_risk": 0, "revenue_at_risk": 0, "bands": Counter()})
@@ -280,7 +269,6 @@ def main() -> None:
         "high_count": band_counts.get("high", 0),
         "total_alerts": len(alerts),
         "top_reasons": top_reasons,
-        "heatmap": {k: dict(v) for k, v in heatmap.items()},
         "renewal_funnel": {
             "upcoming": upcoming_renewals,
             "high_risk": high_risk_renewals,
@@ -290,7 +278,7 @@ def main() -> None:
 
     # ---- Final output ----
     dashboard = {
-        "generated_at": "2025-12-15T00:00:00Z",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "executive": executive,
         "sellers": seller_list,
         "cohorts": cohorts,

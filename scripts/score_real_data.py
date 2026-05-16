@@ -51,26 +51,38 @@ def reason(code: str, severity: str, evidence: str) -> Dict[str, str]:
 
 
 def score_seller(f: Dict[str, str]) -> Tuple[float, float, List[Dict], str]:
+    """
+    Thresholds calibrated to actual IndiaMART dataset distributions:
+      neg_intent:    median=0.20, p75=0.28, max=0.75
+      pickup_30d:    median=0.63, p25=0.45
+      cancel_rate:   median=0.21, p75=0.33
+      overall_rating: median=3.6, p25=2.8
+      buylead_trend:  p25=-17%, min=-86%
+      days_to_renewal: -349 to +15 (94% already expired)
+    """
     reasons: List[Dict] = []
     score = 0.0
 
-    # 1. Negative call intent (weight: 22)
+    # 1. Negative call intent — Considering Cancellation + Disengaged (weight: 22)
+    # Range 0–0.75; median=0.20. Threshold at 0.40 for max score.
     neg_intent = sf(f.get("negative_intent_pct"))
     score += 22 * clamp(neg_intent / 0.40, 0, 1)
     if neg_intent > 0.20:
         reasons.append(reason("high_negative_intent", "high",
-            f"{neg_intent*100:.0f}% of calls show Cancellation/Disengaged intent"))
+            f"{neg_intent*100:.0f}% of calls show cancellation/disengaged intent"))
 
-    # 2. Call pickup decline (weight: 15)
+    # 2. Call pickup rate (weight: 15)
+    # Median=0.63, p25=0.45. Start scoring below 0.70, max at 0.10.
     pickup_30 = sf(f.get("act_30d_call_pickup_pct"))
-    score += 15 * clamp((0.70 - pickup_30) / 0.40, 0, 1)
-    if pickup_30 < 0.50:
+    score += 15 * clamp((0.70 - pickup_30) / 0.60, 0, 1)
+    if pickup_30 < 0.45:
         reasons.append(reason("low_call_pickup", "high",
             f"Call pickup rate is {pickup_30*100:.0f}% (30-day)"))
 
     # 3. Cancellation rate (weight: 14)
+    # Median=0.21, p75=0.33. Threshold at 0.40 for max score.
     cancel_rate = sf(f.get("cancellation_rate"))
-    score += 14 * clamp(cancel_rate / 0.35, 0, 1)
+    score += 14 * clamp(cancel_rate / 0.40, 0, 1)
     if cancel_rate > 0.20:
         cancelled = si(f.get("cancelled_transactions"))
         reasons.append(reason("high_cancellation_rate", "high",
@@ -84,17 +96,18 @@ def score_seller(f: Dict[str, str]) -> Tuple[float, float, List[Dict], str]:
             f"{deact} service deactivation ticket(s) raised"))
 
     # 5. Overall rating (weight: 8)
+    # Median=3.6, range 2.0–5.0. Threshold at 4.0 (below median is concern).
     rating = sf(f.get("overall_rating"))
-    score += 8 * clamp((3.0 - rating) / 2.0, 0, 1)
-    if rating < 2.5:
+    score += 8 * clamp((4.0 - rating) / 3.0, 0, 1)
+    if rating < 3.0:
         reasons.append(reason("low_rating", "medium",
             f"Overall rating is {rating:.1f}/5"))
 
     # 6. Low review response (weight: 6)
     rev_resp = sf(f.get("low_review_response_rate"))
     low_count = si(f.get("low_rating_review_count"))
-    score += 6 * clamp((0.50 - rev_resp) / 0.50, 0, 1)
-    if rev_resp < 0.30 and low_count > 5:
+    score += 6 * clamp((0.60 - rev_resp) / 0.60, 0, 1)
+    if rev_resp < 0.30 and low_count >= 5:
         reasons.append(reason("unresponsive_to_reviews", "medium",
             f"Only {rev_resp*100:.0f}% of {low_count} negative reviews addressed"))
 
@@ -105,33 +118,48 @@ def score_seller(f: Dict[str, str]) -> Tuple[float, float, List[Dict], str]:
     score += 3 * clamp(conflict / 2, 0, 1)
     if open_tkt >= 2:
         reasons.append(reason("open_tickets", "medium", f"{open_tkt} open support tickets"))
-    if conflict >= 2:
-        reasons.append(reason("buyer_conflicts", "high", f"{conflict} buyer-supplier conflict tickets"))
+    if conflict >= 1:
+        reasons.append(reason("buyer_conflicts", "high", f"{conflict} buyer-supplier conflict ticket(s)"))
 
     # 8. Untouched contacts (weight: 5)
+    # Median=0.167, p75=0.258. Threshold at 0.30.
     untouched = sf(f.get("untouched_pct"))
-    score += 5 * clamp(untouched / 0.35, 0, 1)
-    if untouched > 0.25:
+    score += 5 * clamp(untouched / 0.30, 0, 1)
+    if untouched > 0.20:
         reasons.append(reason("untouched_leads", "medium",
-            f"{untouched*100:.0f}% of contacts are untouched"))
+            f"{untouched*100:.0f}% of contacts untouched"))
 
-    # 9. Trend decay (weight: 8)
-    bl_trend = sf(f.get("buylead_trend"))
+    # 9. Trend decay — buylead/enquiry % change vs prior months (weight: 10)
+    # bl_trend range: -86 to +68; p25=-17.7%. Max at -50%.
+    bl_trend  = sf(f.get("buylead_trend"))
     enq_trend = sf(f.get("enquiry_trend"))
-    score += 4 * clamp(-bl_trend / 30, 0, 1)
-    score += 4 * clamp(-enq_trend / 50, 0, 1)
-    if bl_trend < -15:
+    score += 6 * clamp(-bl_trend / 50, 0, 1)
+    score += 4 * clamp(-enq_trend / 100, 0, 1)
+    if bl_trend < -20:
         reasons.append(reason("declining_buyleads", "medium",
-            f"BuyLead volume trending down by {abs(bl_trend):.0f} per month"))
+            f"BuyLead volume down {abs(bl_trend):.0f}% vs prior period"))
 
-    # 10. Renewal proximity amplifier (weight: 5)
+    # 10. Subscription status (weight: 10)
+    # Dataset: dtr range -349 to +15; 94% expired. Most actionable: dtr -90 to +90.
     days_renew = f.get("days_to_renewal")
     if days_renew not in ("", None, "None"):
         dr = si(days_renew)
         if 0 <= dr <= 90:
-            score += 5 * clamp((90 - dr) / 90, 0, 1)
-            reasons.append(reason("renewal_approaching", "high",
-                f"Subscription renews in {dr} days"))
+            # About to expire — highest urgency
+            score += 10 * clamp((90 - dr) / 90, 0, 1)
+            reasons.append(reason("renewal_approaching", "critical",
+                f"Subscription expires in {dr} days"))
+        elif -30 <= dr < 0:
+            # Just expired — still recoverable
+            score += 8
+            reasons.append(reason("subscription_expired", "high",
+                f"Subscription expired {abs(dr)} days ago"))
+        elif -90 <= dr < -30:
+            score += 5
+            reasons.append(reason("subscription_lapsed", "medium",
+                f"Subscription lapsed {abs(dr)} days ago"))
+        elif -180 <= dr < -90:
+            score += 3
 
     score = round(clamp(score, 1, 99), 2)
     confidence = round(clamp(0.55 + 0.07 * min(len(reasons), 5), 0.55, 0.95), 3)

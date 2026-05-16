@@ -1,6 +1,10 @@
 ---
 name: churn-intelligence
-description: Build, score, explain, and operate B2B marketplace churn early-warning workflows for sellers, buyers, and premium subscribers. Use when Codex needs churn definitions, feature engineering, 90-day renewal risk logic, retention playbooks, AI reasons-to-stay prompts, dataset generation support, dashboard/API/database designs, or hackathon-grade churn intelligence artifacts.
+description: Build, score, explain, and operate B2B marketplace churn early-warning workflows for sellers, buyers, and premium subscribers. Use when an agent needs churn definitions, feature engineering, 90-day renewal risk logic, retention playbooks, AI reasons-to-stay prompts, dataset generation support, dashboard/API/database designs, or churn intelligence explanations for B2B marketplaces.
+compatibility: Requires Python 3.8+. Scripts use only the Python standard library — no additional packages needed.
+metadata:
+  author: IndiaMART
+  version: "1.0"
 ---
 
 # Churn Intelligence
@@ -38,7 +42,18 @@ Prioritize interpretable reasons over opaque scores. A useful risk output contai
 - Recommended next best action.
 - Revenue at risk when subscription value is available.
 
-Use `scripts/score_account.py` for deterministic account-level scoring.
+Use `scripts/score_account.py` for deterministic account-level scoring:
+
+```bash
+# Score from a JSON file
+python scripts/score_account.py --input payload.json
+
+# Score from stdin
+echo '{"entity_type":"seller","response_rate_30d":0.46}' | python scripts/score_account.py
+
+# Run the built-in example
+python scripts/score_account.py --example
+```
 
 ## AI Retention Summary Rules
 
